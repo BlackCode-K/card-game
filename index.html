@@ -40,6 +40,12 @@
     #setup-controls {
       margin-bottom: 20px;
     }
+    
+    .input-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
 
     #input-grid {
       display: grid;
@@ -48,12 +54,14 @@
       margin-top: 20px;
     }
 
-    #input-grid input {
+    #input-grid textarea {
       width: 100%;
+      height: 70px; /* กำหนดความสูงให้รองรับ 3 บรรทัด */
       padding: 10px;
       border: 2px solid #ddd;
       border-radius: 6px;
       box-sizing: border-box;
+      resize: vertical; /* อนุญาตให้ผู้ใช้ปรับขนาดความสูงได้ */
     }
 
     button {
@@ -72,7 +80,6 @@
       background-color: #0056b3;
     }
 
-    /* การปรับปรุง CSS เพื่อปรับขนาดแผ่นป้าย */
     #card-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -83,7 +90,7 @@
     .card {
       background-color: #4a90e2;
       color: white;
-      min-height: 100px; /* ใช้ min-height แทน height เพื่อให้ยืดหยุ่น */
+      min-height: 100px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -93,7 +100,7 @@
       cursor: pointer;
       transition: transform 0.2s ease, background-color 0.2s ease;
       word-wrap: break-word;
-      padding: 5px; /* เพิ่ม padding เพื่อให้ข้อความไม่ชิดขอบ */
+      padding: 5px;
     }
 
     .card:hover {
@@ -110,6 +117,7 @@
       font-size: 0.9em;
       padding: 5px;
       text-align: center;
+      white-space: pre-wrap; /* รักษาการขึ้นบรรทัดใหม่จาก textarea */
     }
 
     .hidden {
@@ -173,11 +181,15 @@
       const inputGrid = document.getElementById('input-grid');
       inputGrid.innerHTML = '';
       for (let i = 0; i < cardCount; i++) {
-        const inputField = document.createElement('input');
-        inputField.type = 'text';
-        inputField.id = `input-${i}`;
-        inputField.placeholder = `ข้อความสำหรับแผ่นป้ายที่ ${i + 1}`;
-        inputGrid.appendChild(inputField);
+        const wrapper = document.createElement('div');
+        wrapper.className = 'input-wrapper';
+        
+        const textarea = document.createElement('textarea');
+        textarea.id = `input-${i}`;
+        textarea.placeholder = `ข้อความสำหรับแผ่นป้ายที่ ${i + 1} (รองรับหลายบรรทัด)`;
+        
+        wrapper.appendChild(textarea);
+        inputGrid.appendChild(wrapper);
       }
       document.getElementById('start-button').style.display = 'block';
     }
