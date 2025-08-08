@@ -115,44 +115,59 @@
     }
 
     .card {
-      background: #736eeb;
-      color: white;
+      background: transparent;
       min-height: 120px;
+      perspective: 1000px; /* ใช้สำหรับสร้างมุมมอง 3D */
+      cursor: pointer;
+    }
+
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-style: preserve-3d;
+    }
+
+    .card.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden; /* ซ่อนด้านหลังของการ์ด */
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 1.5em;
-      font-weight: bold;
       border-radius: 12px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      cursor: pointer;
-      transition: all 0.4s ease;
-      word-wrap: break-word;
+      font-size: 1.5em;
+      font-weight: bold;
       padding: 10px;
+      word-wrap: break-word;
     }
 
-    .card:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    .card-front {
+      background: #736eeb;
+      color: white;
+      z-index: 2;
     }
 
-    .card.flipped {
+    .card-back {
       background: #fff;
       color: #333;
-      cursor: default;
-      transform: scale(1);
-      pointer-events: none;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transform: rotateY(180deg);
       font-size: 1.1em;
-      padding: 15px;
-      text-align: center;
       white-space: pre-wrap;
     }
-
+    
     .hidden {
       display: none;
     }
-
+    
     .footer {
       text-align: center;
       padding: 20px;
@@ -161,7 +176,7 @@
       border-top: 1px solid #e0e0e0;
       margin-top: 30px;
     }
-
+    
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(-20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -190,11 +205,11 @@
       <button onclick="resetGame()">เริ่มใหม่</button>
     </div>
   </div>
-
+  
   <div class="footer">
       <p>&copy; By KruKean | Sombat Tepprom | Power of AI</p>
   </div>
-
+  
   <script>
     let cardContents = [];
     let cardCount = 12;
@@ -216,11 +231,11 @@
       for (let i = 0; i < cardCount; i++) {
         const wrapper = document.createElement('div');
         wrapper.className = 'input-wrapper';
-
+        
         const textarea = document.createElement('textarea');
         textarea.id = `input-${i}`;
         textarea.placeholder = `ข้อความสำหรับแผ่นป้ายที่ ${i + 1} (รองรับหลายบรรทัด)`;
-
+        
         wrapper.appendChild(textarea);
         inputGrid.appendChild(wrapper);
       }
@@ -239,7 +254,7 @@
         cardContents.push(inputElement.value || `แผ่นป้ายที่ ${i + 1}`);
       }
 
-      shuffleArray(cardContents);
+      shuffleArray(cardContents); 
 
       document.getElementById('setup-view').classList.add('hidden');
       document.getElementById('game-view').classList.remove('hidden');
@@ -250,11 +265,11 @@
     function resetGame() {
       document.getElementById('game-view').classList.add('hidden');
       document.getElementById('setup-view').classList.remove('hidden');
-
+      
       const inputGrid = document.getElementById('input-grid');
       inputGrid.innerHTML = '';
       document.getElementById('start-button').style.display = 'none';
-
+      
       document.getElementById('card-count').value = '12';
       cardContents = [];
 
@@ -270,20 +285,34 @@
       for (let i = 0; i < cardCount; i++) {
         const card = document.createElement('div');
         card.className = 'card';
-        card.textContent = `แผ่นป้าย ${i + 1}`;
         card.dataset.index = i;
         card.addEventListener('click', flipCard);
+
+        const cardInner = document.createElement('div');
+        cardInner.className = 'card-inner';
+
+        const cardFront = document.createElement('div');
+        cardFront.className = 'card-front';
+        cardFront.textContent = `แผ่นป้าย ${i + 1}`;
+
+        const cardBack = document.createElement('div');
+        cardBack.className = 'card-back';
+        cardBack.textContent = cardContents?.[i] || '';
+
+        cardInner.appendChild(cardFront);
+        cardInner.appendChild(cardBack);
+        card.appendChild(cardInner);
         cardGrid.appendChild(card);
       }
     }
 
     function flipCard(event) {
-      const card = event.target;
-      const index = parseInt(card.dataset.index);
+      const cardElement = event.currentTarget;
+      const cardInner = cardElement.querySelector('.card-inner');
 
-      if (!card.classList.contains('flipped')) {
-        card.classList.add('flipped');
-        card.textContent = cardContents[index];
+      if (!cardElement.classList.contains('flipped')) {
+        cardElement.classList.add('flipped');
+        // ไม่ต้องกำหนด transform ที่นี่แล้ว เพราะ CSS จะจัดการให้
       }
     }
 
