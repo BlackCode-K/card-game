@@ -32,7 +32,6 @@ function startGame() {
   createCardGrid();
 }
 
-// เพิ่มฟังก์ชันสำหรับรีเซ็ตเกม
 function resetGame() {
   document.getElementById('game-view').classList.add('hidden');
   document.getElementById('setup-view').classList.remove('hidden');
@@ -69,6 +68,7 @@ function flipCard(event) {
   }
 }
 
+// ฟังก์ชันสำหรับสลับตำแหน่งของอาร์เรย์แบบสุ่ม
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
