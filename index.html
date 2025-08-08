@@ -37,6 +37,10 @@
       color: #666;
     }
 
+    #setup-controls {
+      margin-bottom: 20px;
+    }
+
     #input-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -70,7 +74,7 @@
 
     #card-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* ปรับให้ยืดหยุ่นตามจำนวนแผ่นป้าย */
       gap: 15px;
       margin-top: 20px;
     }
@@ -123,10 +127,15 @@
   <div class="container">
     <div id="setup-view">
       <h1>ตั้งค่าเกมเปิดแผ่นป้าย</h1>
-      <p>ป้อนข้อความที่จะซ่อนไว้หลังแผ่นป้ายทั้ง 12 แผ่น</p>
+      <p>ป้อนจำนวนแผ่นป้ายที่ต้องการ (5 - 20)</p>
+      <div id="setup-controls">
+        <input type="number" id="card-count" min="5" max="20" value="12">
+        <button onclick="generateInputs()">สร้างช่องป้อนข้อความ</button>
+      </div>
+
       <div id="input-grid">
         </div>
-      <button onclick="startGame()">เริ่มเกม</button>
+      <button id="start-button" onclick="startGame()" style="display: none;">เริ่มเกม</button>
     </div>
 
     <div id="game-view" class="hidden">
@@ -143,14 +152,23 @@
   
   <script>
     let cardContents = [];
-    const cardCount = 12;
+    let cardCount = 12;
 
     document.addEventListener('DOMContentLoaded', () => {
-      createInputFields();
+      // ไม่ต้องสร้างช่องป้อนข้อมูลทันที
     });
 
-    function createInputFields() {
+    function generateInputs() {
+      const inputElement = document.getElementById('card-count');
+      cardCount = parseInt(inputElement.value);
+
+      if (cardCount < 5 || cardCount > 20 || isNaN(cardCount)) {
+        alert('กรุณาป้อนจำนวนแผ่นป้ายระหว่าง 5 ถึง 20');
+        return;
+      }
+
       const inputGrid = document.getElementById('input-grid');
+      inputGrid.innerHTML = '';
       for (let i = 0; i < cardCount; i++) {
         const inputField = document.createElement('input');
         inputField.type = 'text';
@@ -158,10 +176,16 @@
         inputField.placeholder = `ข้อความสำหรับแผ่นป้ายที่ ${i + 1}`;
         inputGrid.appendChild(inputField);
       }
+      document.getElementById('start-button').style.display = 'block';
     }
 
     function startGame() {
       cardContents = [];
+      const inputGrid = document.getElementById('input-grid');
+      if (inputGrid.children.length === 0) {
+        alert('กรุณาสร้างช่องป้อนข้อความก่อน');
+        return;
+      }
       for (let i = 0; i < cardCount; i++) {
         const inputElement = document.getElementById(`input-${i}`);
         cardContents.push(inputElement.value || `แผ่นป้ายที่ ${i + 1}`);
@@ -179,10 +203,11 @@
       document.getElementById('game-view').classList.add('hidden');
       document.getElementById('setup-view').classList.remove('hidden');
       
-      for (let i = 0; i < cardCount; i++) {
-        document.getElementById(`input-${i}`).value = '';
-      }
+      const inputGrid = document.getElementById('input-grid');
+      inputGrid.innerHTML = ''; // ลบช่องป้อนข้อมูลทั้งหมด
+      document.getElementById('start-button').style.display = 'none'; // ซ่อนปุ่มเริ่มเกม
       
+      document.getElementById('card-count').value = '12'; // รีเซ็ตค่าเริ่มต้น
       cardContents = [];
     }
 
