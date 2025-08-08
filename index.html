@@ -5,9 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>เกมเปิดแผ่นป้าย</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&family=Poppins:wght@400;700&display=swap');
+
     body {
-      font-family: 'Sarabun', sans-serif;
-      background-color: #f0f4f8;
+      font-family: 'Poppins', 'Sarabun', sans-serif;
+      background: linear-gradient(135deg, #f3e7e9 0%, #e3eeff 100%);
       color: #333;
       display: flex;
       justify-content: center;
@@ -20,104 +22,134 @@
 
     .container {
       width: 90%;
-      max-width: 800px;
-      background-color: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      max-width: 850px;
+      background-color: #ffffff;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       margin-bottom: 20px;
+      border: 3px solid #667eea;
+      animation: fadeIn 1s ease-in-out;
     }
 
     h1 {
-      color: #0056b3;
+      font-family: 'Poppins', sans-serif;
+      color: #667eea;
+      font-size: 2.5em;
+      margin-bottom: 10px;
     }
 
     p {
       font-size: 1.1em;
-      color: #666;
+      color: #555;
     }
 
     #setup-controls {
-      margin-bottom: 20px;
+      margin-top: 20px;
     }
-    
+
     .input-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
+      margin-bottom: 10px;
     }
 
     #input-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 15px;
-      margin-top: 20px;
+      margin-top: 25px;
     }
 
     #input-grid textarea {
       width: 100%;
-      height: 70px; /* กำหนดความสูงให้รองรับ 3 บรรทัด */
-      padding: 10px;
-      border: 2px solid #ddd;
-      border-radius: 6px;
+      height: 80px;
+      padding: 12px;
+      border: 2px solid #a3b1ff;
+      border-radius: 10px;
       box-sizing: border-box;
-      resize: vertical; /* อนุญาตให้ผู้ใช้ปรับขนาดความสูงได้ */
+      resize: vertical;
+      font-family: 'Sarabun', sans-serif;
+      font-size: 1em;
+      transition: all 0.3s ease;
+    }
+    
+    #input-grid textarea:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 8px rgba(102, 126, 234, 0.5);
+        outline: none;
+    }
+    
+    #card-count {
+        padding: 8px;
+        border: 2px solid #a3b1ff;
+        border-radius: 8px;
+        font-size: 1em;
+        width: 80px;
+        text-align: center;
     }
 
     button {
-      background-color: #007bff;
+      background-color: #ff6b6b;
       color: white;
       border: none;
-      padding: 12px 25px;
-      font-size: 1em;
-      border-radius: 6px;
+      padding: 14px 30px;
+      font-size: 1.1em;
+      font-weight: bold;
+      border-radius: 10px;
       cursor: pointer;
-      margin-top: 20px;
-      transition: background-color 0.3s ease;
+      margin-top: 25px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
     }
 
     button:hover {
-      background-color: #0056b3;
+      background-color: #e55a5a;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
     }
 
     #card-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
       gap: 15px;
-      margin-top: 20px;
+      margin-top: 25px;
     }
 
     .card {
-      background-color: #4a90e2;
+      background: #736eeb;
       color: white;
-      min-height: 100px;
+      min-height: 120px;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 1.2em;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      font-size: 1.5em;
+      font-weight: bold;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
       cursor: pointer;
-      transition: transform 0.2s ease, background-color 0.2s ease;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       word-wrap: break-word;
-      padding: 5px;
+      padding: 10px;
+      transform-style: preserve-3d;
     }
 
     .card:hover {
-      transform: translateY(-5px);
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     }
 
     .card.flipped {
-      background-color: #e9ecef;
+      background: #fff;
       color: #333;
       cursor: default;
-      transform: none;
+      transform: scale(1);
+      transform: rotateY(180deg);
       pointer-events: none;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-      font-size: 0.9em;
-      padding: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      font-size: 1.1em;
+      padding: 15px;
       text-align: center;
-      white-space: pre-wrap; /* รักษาการขึ้นบรรทัดใหม่จาก textarea */
+      white-space: pre-wrap;
+      animation: flip 0.6s ease-in-out forwards;
     }
 
     .hidden {
@@ -127,30 +159,40 @@
     .footer {
       text-align: center;
       padding: 20px;
-      font-size: 0.8em;
-      color: #777;
-      border-top: 1px solid #eee;
+      font-size: 0.9em;
+      color: #888;
+      border-top: 1px solid #e0e0e0;
       margin-top: 30px;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes flip {
+        from { transform: perspective(600px) rotateY(0deg); }
+        to { transform: perspective(600px) rotateY(180deg); }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <div id="setup-view">
-      <h1>ตั้งค่าเกมเปิดแผ่นป้าย</h1>
-      <p>ป้อนจำนวนแผ่นป้ายที่ต้องการ (5 - 20)</p>
+      <h1>เกมเปิดแผ่นป้ายมหาสนุก 🎉</h1>
+      <p>อยากเล่นกี่แผ่นป้ายดี (5 - 20)</p>
       <div id="setup-controls">
         <input type="number" id="card-count" min="5" max="20" value="12">
-        <button onclick="generateInputs()">สร้างช่องป้อนข้อความ</button>
+        <button onclick="generateInputs()">สร้างแผ่นป้าย</button>
       </div>
 
       <div id="input-grid">
         </div>
-      <button id="start-button" onclick="startGame()" style="display: none;">เริ่มเกม</button>
+      <button id="start-button" onclick="startGame()" style="display: none;">เริ่มเกมกันเลย!</button>
     </div>
 
     <div id="game-view" class="hidden">
-      <h1>เลือกแผ่นป้าย</h1>
+      <h1>เลือกเปิดแผ่นป้ายเลย!</h1>
       <div id="card-grid">
         </div>
       <button onclick="resetGame()">เริ่มใหม่</button>
@@ -166,7 +208,7 @@
     let cardCount = 12;
 
     document.addEventListener('DOMContentLoaded', () => {
-      // ไม่ต้องสร้างช่องป้อนข้อมูลทันที
+      // Nothing to do here initially
     });
 
     function generateInputs() {
