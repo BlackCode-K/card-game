@@ -72,9 +72,10 @@
       background-color: #0056b3;
     }
 
+    /* การปรับปรุง CSS เพื่อปรับขนาดแผ่นป้าย */
     #card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* ปรับให้ยืดหยุ่นตามจำนวนแผ่นป้าย */
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
       gap: 15px;
       margin-top: 20px;
     }
@@ -82,7 +83,7 @@
     .card {
       background-color: #4a90e2;
       color: white;
-      height: 100px;
+      min-height: 100px; /* ใช้ min-height แทน height เพื่อให้ยืดหยุ่น */
       display: flex;
       justify-content: center;
       align-items: center;
@@ -91,6 +92,8 @@
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       cursor: pointer;
       transition: transform 0.2s ease, background-color 0.2s ease;
+      word-wrap: break-word;
+      padding: 5px; /* เพิ่ม padding เพื่อให้ข้อความไม่ชิดขอบ */
     }
 
     .card:hover {
@@ -204,10 +207,10 @@
       document.getElementById('setup-view').classList.remove('hidden');
       
       const inputGrid = document.getElementById('input-grid');
-      inputGrid.innerHTML = ''; // ลบช่องป้อนข้อมูลทั้งหมด
-      document.getElementById('start-button').style.display = 'none'; // ซ่อนปุ่มเริ่มเกม
+      inputGrid.innerHTML = '';
+      document.getElementById('start-button').style.display = 'none';
       
-      document.getElementById('card-count').value = '12'; // รีเซ็ตค่าเริ่มต้น
+      document.getElementById('card-count').value = '12';
       cardContents = [];
     }
 
