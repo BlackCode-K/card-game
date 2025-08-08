@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เกมเปิดแผ่นป้าย</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div id="setup-view">
+      <h1>ตั้งค่าเกมเปิดแผ่นป้าย</h1>
+      <p>ป้อนข้อความที่จะซ่อนไว้หลังแผ่นป้ายทั้ง 12 แผ่น</p>
+      <div id="input-grid">
+        </div>
+      <button onclick="startGame()">เริ่มเกม</button>
+    </div>
+
+    <div id="game-view" class="hidden">
+      <h1>เลือกแผ่นป้าย</h1>
+      <div id="card-grid">
+        </div>
+      <button onclick="resetGame()">เริ่มใหม่</button>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
