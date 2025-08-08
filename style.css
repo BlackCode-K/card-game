@@ -8,6 +8,7 @@ body {
   min-height: 100vh;
   margin: 0;
   text-align: center;
+  flex-direction: column; /* Allows content and footer to stack vertically */
 }
 
 .container {
@@ -17,6 +18,7 @@ body {
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px; /* Space between container and footer */
 }
 
 h1 {
@@ -98,4 +100,13 @@ button:hover {
 
 .hidden {
   display: none;
+}
+
+.footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 0.8em;
+  color: #777;
+  border-top: 1px solid #eee;
+  margin-top: 30px;
 }
